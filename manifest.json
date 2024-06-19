@@ -1,0 +1,16 @@
+{
+	"name": "Salesforce Tabs",
+	"description": "Categories tabs for Salesforce",
+	"version": "1.0",
+	"manifest_version": 3,
+	"host_permissions": [
+		"https://*.force.com/*",
+		"https://*.developerforce.com/*"
+	],
+	"permissions": [
+		"tabGroups"
+	],
+	"background": {
+		"service_worker": "tabGroups.js"
+	}
+}
