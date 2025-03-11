@@ -155,7 +155,7 @@ putTabsIntoGroup = (existingGroups, newGroups) => {
 
 		// Filter out tabs that are already in a group
 		groupTabs = groupTabs.filter(tabId => {
-			return !existingGroups.some(g => g.tabIds.includes(tabId));
+			return !existingGroups.some(g => (g.tabIds || []).includes(tabId));
 		});
 
 		let existingTabIds = existingGroup?.tabIds?.length > 0 ? existingGroup.tabIds : [];
