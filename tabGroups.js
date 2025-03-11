@@ -143,11 +143,20 @@ getExistingTabGroups = () => {
 	return chrome.tabGroups.query({});
 }
 
+/**
+ * Puts the tabs into the group. If the group does not exist, it will create a new group.
+ * If the tab is already in a group, ignore it.
+ */
 putTabsIntoGroup = (existingGroups, newGroups) => {
 	Object.keys(newGroups).forEach(groupKey => {
 		let group = newGroups[groupKey];
 		let existingGroup = existingGroups.find(g => g.title === group.label);
 		let groupTabs = group.members.map(tab => tab.id);
+
+		// Filter out tabs that are already in a group
+		groupTabs = groupTabs.filter(tabId => {
+			return !existingGroups.some(g => g.tabIds.includes(tabId));
+		});
 
 		let existingTabIds = existingGroup?.tabIds?.length > 0 ? existingGroup.tabIds : [];
 		let newTabIds = groupTabs.filter(tabId => !existingTabIds.includes(tabId));
@@ -169,6 +178,9 @@ putTabsIntoGroup = (existingGroups, newGroups) => {
 	});
 }
 
+/**
+ * Labels the tab group with the org name
+ */
 labelGroup = (group) => {
 	chrome.tabGroups.update(group.groupId, {title: group.label});
 }
